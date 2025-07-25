@@ -1,28 +1,36 @@
 import streamlit as st
-
-st.title("🧠 NLP Chatbot")
-st.write("Welcome! This is your first deployed Streamlit app.")
-import streamlit as st
 import pandas as pd
+import difflib
 
-st.set_page_config(page_title="NLP Chatbot", page_icon="🧠")
-st.title("🧠 NLP Chatbot")
+st.set_page_config(page_title="Smart NLP Chatbot", page_icon="💬")
+st.title("💬 Smart NLP Chatbot with Fuzzy Matching")
 
-# Load dataset (assumes it's in the same repo)
+# Load Excel dataset
 @st.cache_data
 def load_data():
-    return pd.read_csv("cleaned_chatbot_dataset.csv")
+    try:
+        df = pd.read_excel("chatbot_dataset.xlsx")
+        df = df.dropna()
+        return df
+    except Exception as e:
+        st.error(f"Failed to load dataset: {e}")
+        return pd.DataFrame(columns=["Question", "Answer"])
 
 df = load_data()
 
-# User input
-user_question = st.text_input("Ask me something 👇")
-
-if user_question:
-    # Simple matching (case insensitive)
-    matched = df[df['Question'].str.lower() == user_question.lower()]
-    
-    if not matched.empty:
-        st.success(f"Answer: {matched.iloc[0]['Answer']}")
+# Get chatbot response using fuzzy matching
+def get_response(user_input):
+    questions = df['Question'].str.lower().tolist()
+    matches = difflib.get_close_matches(user_input.lower(), questions, n=1, cutoff=0.5)
+    if matches:
+        matched_row = df[df['Question'].str.lower() == matches[0]]
+        return matched_row['Answer'].values[0]
     else:
-        st.warning("I couldn't find an answer to that question.")
+        return "Sorry, I don't understand that yet."
+
+# UI
+user_input = st.text_input("You:", placeholder="Type your question here...")
+
+if user_input:
+    answer = get_response(user_input)
+    st.text_area("Bot:", answer, height=100)
