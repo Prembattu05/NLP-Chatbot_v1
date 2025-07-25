@@ -9,7 +9,7 @@ st.title("💬 Smart NLP Chatbot with Fuzzy Matching")
 @st.cache_data
 def load_data():
     try:
-        df = pd.read_excel("chatbot_dataset_augmented.csv")
+        df = pd.read_excel("chatbot_dataset.txt")
         df = df.dropna()
         return df
     except Exception as e:
