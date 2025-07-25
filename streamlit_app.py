@@ -1,9 +1,3 @@
-import os
-import streamlit as st
-
-st.write("📂 Working directory:", os.getcwd())
-st.write("📄 Files in current directory:", os.listdir())
-
 import streamlit as st
 import pandas as pd
 import difflib
@@ -15,7 +9,7 @@ st.title("💬 Smart NLP Chatbot with Fuzzy Matching")
 @st.cache_data
 def load_data():
     try:
-        df = pd.read_csv("data/chatbot_dataset_augmented.csv")
+        df = pd.read_csv("chatbot_dataset_augmented.csv")
         df = df.dropna()
         return df
     except Exception as e:
