@@ -11,7 +11,7 @@ st.title("🧠 NLP Chatbot")
 # Load dataset (assumes it's in the same repo)
 @st.cache_data
 def load_data():
-    return pd.read_csv("QnA.csv")
+    return pd.read_csv("cleaned_chatbot_dataset.csv")
 
 df = load_data()
 
