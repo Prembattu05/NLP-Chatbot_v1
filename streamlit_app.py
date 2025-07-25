@@ -4,7 +4,7 @@ import difflib
 import os
 
 st.set_page_config(page_title="Smart NLP Chatbot", page_icon="💬")
-st.title("💬 Smart NLP Chatbot with Fuzzy Matching")
+st.title("💬 Smart NLP Chatbot")
 
 @st.cache_data
 def load_data():
